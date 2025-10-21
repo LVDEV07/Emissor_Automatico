@@ -1,54 +1,57 @@
-﻿# Emissor Automatico
+<h1>Automação de Emissão de NFSe - Embu das Artes</h1>
 
-Este projeto consiste em um script Python que utiliza a biblioteca Selenium para automatizar o processo de emissão de Notas Fiscais de Serviço Eletrônica (NFSe) no portal da prefeitura de Embu das Artes - SP.
+<p>Este projeto consiste em um script Python que utiliza a biblioteca Selenium para automatizar o processo de emissão de Notas Fiscais de Serviço Eletrônica (NFSe) no portal da prefeitura de Embu das Artes - SP.</p>
 
-O script oferece dois modos de operação: um modo totalmente automático que lê os dados de uma planilha Excel e um modo semi-automático que solicita os dados interativamente pelo terminal.
+<p>O script oferece dois modos de operação: um modo totalmente automático que lê os dados de uma planilha Excel e um modo semi-automático que solicita os dados interativamente pelo terminal.</p>
 
-Portal Alvo
-O script foi desenvolvido para interagir com o seguinte portal: https://nfseembudasartes.obaratec.com.br
+<h2>Portal Alvo</h2>
 
-#Funcionalidades
-<b> Login Automático: </b> O script realiza o login no portal NFSe.
+<p>O script foi desenvolvido para interagir com o seguinte portal:<br>
+<code>https://nfseembudasartes.obaratec.com.br</code></p>
 
-##Dois Modos de Operação:
+<h2>Funcionalidades</h2>
 
-Modo auto: Lê os dados de uma planilha Excel (notas.xlsx) para emitir múltiplas notas em lote.
+<ul>
+    <li><strong>Login Automático:</strong> O script realiza o login no portal NFSe.</li>
+    <li><strong>Dois Modos de Operação:</strong>
+        <ul>
+            <li><strong>Modo <code>auto</code>:</strong> Lê os dados de uma planilha Excel (<code>notas.xlsx</code>) para emitir múltiplas notas em lote.</li>
+            <li><strong>Modo <code>semi</code>:</strong> Permite a emissão de notas uma a uma, solicitando os dados (CNPJ, descrição, valor) diretamente no terminal.</li>
+        </ul>
+    </li>
+    <li><strong>Navegação Automatizada:</strong> Preenche os campos do formulário, lida com a seleção do tomador de serviço (incluindo a troca para a janela pop-up) e preenche os detalhes da prestação de serviço.</li>
+    <li><strong>Confirmação Final:</strong> Antes de emitir cada nota, o script solicita uma confirmação manual no terminal.</li>
+</ul>
 
-Modo semi: Permite a emissão de notas uma a uma, solicitando os dados (CNPJ, descrição, valor) diretamente no terminal.
+<h2>Pré-requisitos</h2>
 
-Navegação Automatizada: Preenche os campos do formulário, lida com a seleção do tomador de serviço (incluindo a troca para a janela pop-up) e preenche os detalhes da prestação de serviço.
+<p>Para executar este projeto, você precisará de:</p>
 
-Confirmação Final: Antes de emitir cada nota, o script solicita uma confirmação manual no terminal.
+<ul>
+    <li>Python 3.x</li>
+    <li>O navegador Google Chrome</li>
+    <li>ChromeDriver compatível com a sua versão do Google Chrome. (O Selenium precisa dele para controlar o navegador).</li>
+    <li>As seguintes bibliotecas Python:
+        <ul>
+            <li><code>selenium</code></li>
+            <li><code>pandas</code></li>
+        </ul>
+    </li>
+</ul>
 
-Pré-requisitos
-Para executar este projeto, você precisará de:
+<p>Você pode instalar as bibliotecas necessárias usando o pip:</p>
 
-Python 3.x
+<pre><code>pip install selenium pandas openpyxl</code></pre>
 
-O navegador Google Chrome
+<h2>Configuração Obrigatória</h2>
 
-ChromeDriver compatível com a sua versão do Google Chrome. (O Selenium precisa dele para controlar o navegador).
+<p>Antes de executar o script, você <strong>DEVE</strong> configurar suas credenciais e preparar o ambiente:</p>
 
-As seguintes bibliotecas Python:
+<h3>1. Credenciais de Acesso</h3>
 
-selenium
+<p>Abra o arquivo <code>form.py</code> e localize a função <code>Login()</code>. Você precisa inserir seu usuário e senha de acesso ao portal nos locais indicados:</p>
 
-pandas
-
-Você pode instalar as bibliotecas necessárias usando o pip:
-
-Bash
-
-pip install selenium pandas openpyxl
-Configuração Obrigatória
-Antes de executar o script, você DEVE configurar suas credenciais e preparar o ambiente:
-
-1. Credenciais de Acesso
-Abra o arquivo form.py e localize a função Login(). Você precisa inserir seu usuário e senha de acesso ao portal nos locais indicados:
-
-Python
-
-# Em form.py
+<pre><code># Em form.py
 
 def Login():
     
@@ -62,80 +65,76 @@ def Login():
     # Aperta o botão de entrar
     navegador.find_element(By.XPATH, '//*[@id="P101_LOGIN"]').click()
 
-    return navegador
-    
-2. ChromeDriver
-Certifique-se de que o executável chromedriver esteja no PATH do seu sistema ou localizado na mesma pasta que os scripts Python.
+    return navegador</code></pre>
 
-3. Planilha (Para Modo auto)
-Se você planeja usar o modo auto, siga esta estrutura:
+<h3>2. ChromeDriver</h3>
 
-Crie uma pasta chamada arquivos no mesmo diretório onde o ProgramaAuto.py está.
+<p>Certifique-se de que o executável <code>chromedriver</code> esteja no <code>PATH</code> do seu sistema ou localizado na mesma pasta que os scripts Python.</p>
 
-Dentro da pasta arquivos, crie um arquivo Excel chamado notas.xlsx.
+<h3>3. Planilha (Para Modo <code>auto</code>)</h3>
 
-A planilha deve conter as seguintes colunas, exatamente como nomeadas:
+<p>Se você planeja usar o modo <code>auto</code>, siga esta estrutura:</p>
 
-CNPJ
+<ol>
+    <li>Crie uma pasta chamada <code>arquivos</code> no mesmo diretório onde o <code>ProgramaAuto.py</code> está.</li>
+    <li>Dentro da pasta <code>arquivos</code>, crie um arquivo Excel chamado <code>notas.xlsx</code>.</li>
+    <li>A planilha <strong>deve</strong> conter as seguintes colunas, exatamente como nomeadas:
+        <ul>
+            <li><code>CNPJ</code></li>
+            <li><code>DESCRIÇÃO</code></li>
+            <li><code>VALOR(R$)</code></li>
+            <li><code>INSS</code> (Observação: este campo é lido pelo script, mas não é usado nas funções de preenchimento atuais).</li>
+        </ul>
+    </li>
+</ol>
 
-DESCRIÇÃO
+<h2>Como Usar</h2>
 
-VALOR(R$)
+<ol>
+    <li>Certifique-se de ter concluído todas as etapas de <strong>Configuração Obrigatória</strong>.</li>
+    <li>Abra seu terminal ou prompt de comando.</li>
+    <li>Navegue até o diretório do projeto.</li>
+    <li>Execute o script principal:
+        <pre><code>python ProgramaAuto.py</code></pre>
+    </li>
+    <li>O script perguntará qual modo deseja executar:
+        <pre><code>Qual tipo de programa deseja executar ? (auto/semi)</code></pre>
+    </li>
+    <li><strong>Se escolher <code>auto</code>:</strong>
+        <ul>
+            <li>O script começará a ler o arquivo <code>arquivos/notas.xlsx</code>.</li>
+            <li>Ele abrirá o navegador, fará o login e começará a preencher as notas, uma por linha da planilha.</li>
+            <li>A cada nota, ele perguntará no terminal: <code>Confirma emissão ? s/n</code>.</li>
+            <li>Digite <code>s</code> para emitir e continuar para a próxima, ou qualquer outra tecla para interromper o loop.</li>
+        </ul>
+    </li>
+    <li><strong>Se escolher <code>semi</code>:</strong>
+        <ul>
+            <li>O script solicitará os dados da nota no terminal (CNPJ, Descrição, Valor, etc.).</li>
+            <li>Ele perguntará se deseja prosseguir com a emissão (<code>s/n</code>).</li>
+            <li>Se <code>s</code>, ele fará o login e preencherá a nota.</li>
+            <li>Ele solicitará a confirmação final: <code>Confirma emissão ? s/n</code>.</li>
+            <li>Após a emissão (ou cancelamento), ele perguntará: <code>Deseja continuar emitindo novas notas ? s/n</code>.</li>
+            <li>Digite <code>s</code> para emitir outra nota ou <code>n</code> para encerrar o programa.</li>
+        </ul>
+    </li>
+</ol>
 
-INSS (Observação: este campo é lido pelo script, mas não é usado nas funções de preenchimento atuais).
+<h2>Estrutura dos Arquivos</h2>
 
-Como Usar
-Certifique-se de ter concluído todas as etapas de Configuração Obrigatória.
-
-Abra seu terminal ou prompt de comando.
-
-Navegue até o diretório do projeto.
-
-Execute o script principal:
-
-Bash
-
-python ProgramaAuto.py
-O script perguntará qual modo deseja executar:
-
-Qual tipo de programa deseja executar ? (auto/semi)
-Se escolher auto:
-
-O script começará a ler o arquivo arquivos/notas.xlsx.
-
-Ele abrirá o navegador, fará o login e começará a preencher as notas, uma por linha da planilha.
-
-A cada nota, ele perguntará no terminal: Confirma emissão ? s/n.
-
-Digite s para emitir e continuar para a próxima, ou qualquer outra tecla para interromper o loop.
-
-Se escolher semi:
-
-O script solicitará os dados da nota no terminal (CNPJ, Descrição, Valor, etc.).
-
-Ele perguntará se deseja prosseguir com a emissão (s/n).
-
-Se s, ele fará o login e preencherá a nota.
-
-Ele solicitará a confirmação final: Confirma emissão ? s/n.
-
-Após a emissão (ou cancelamento), ele perguntará: Deseja continuar emitindo novas notas ? s/n.
-
-Digite s para emitir outra nota ou n para encerrar o programa.
-
-Estrutura dos Arquivos
-.
+<pre><code>.
 ├── ProgramaAuto.py     # Script principal que controla o fluxo
 ├── form.py             # Módulo com as funções de automação (Login, preenchimento, etc.)
 └── arquivos/
     └── notas.xlsx      # (Opcional, necessário apenas para o modo 'auto')
-Aviso
-Este é um script de automação que lida com a emissão de documentos fiscais. O uso deste script é de sua inteira responsabilidade.
+</code></pre>
 
-Teste exaustivamente: Antes de usar para emissões reais, teste em um ambiente de homologação (se disponível) ou com dados de teste.
+<h2>Aviso</h2>
 
-Verifique as notas: Sempre confira as notas emitidas pela automação.
+<p>Este é um script de automação que lida com a emissão de documentos fiscais. O uso deste script é de sua inteira responsabilidade.</p>
 
-Manutenção: Os seletores (XPaths, IDs) do site podem mudar a qualquer momento, o que pode quebrar o script. Mantenha os seletores no arquivo form.py atualizados.
-
-
+<ul>
+    <li><strong>Teste exaustivamente:</strong> Antes de usar para emissões reais, teste em um ambiente de homologação (se disponível) ou com dados de teste.</li>
+    <li><strong>Verifique as notas:</strong> Sempre confira as notas emitidas pela automação.</li>
+    <li><strong>Manutenção:</strong> Os seletores (XPaths, IDs) do site podem mudar a qualquer momento, o que pode quebrar o script. Mantenha os seletores no arquivo <code>form.py</code> atualizados.</li>
+</ul>
