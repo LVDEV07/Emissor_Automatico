@@ -1,16 +1,16 @@
-﻿# Emissor_Automatico
+﻿# Emissor Automatico
 
 Este projeto consiste em um script Python que utiliza a biblioteca Selenium para automatizar o processo de emissão de Notas Fiscais de Serviço Eletrônica (NFSe) no portal da prefeitura de Embu das Artes - SP.
 
 O script oferece dois modos de operação: um modo totalmente automático que lê os dados de uma planilha Excel e um modo semi-automático que solicita os dados interativamente pelo terminal.
 
-Portal Alvo
+#Portal Alvo
 O script foi desenvolvido para interagir com o seguinte portal: https://nfseembudasartes.obaratec.com.br
 
-Funcionalidades
-Login Automático: O script realiza o login no portal NFSe.
+#Funcionalidades
+<b> Login Automático: <\b> O script realiza o login no portal NFSe.
 
-Dois Modos de Operação:
+##Dois Modos de Operação:
 
 Modo auto: Lê os dados de uma planilha Excel (notas.xlsx) para emitir múltiplas notas em lote.
 
@@ -137,3 +137,4 @@ Teste exaustivamente: Antes de usar para emissões reais, teste em um ambiente d
 Verifique as notas: Sempre confira as notas emitidas pela automação.
 
 Manutenção: Os seletores (XPaths, IDs) do site podem mudar a qualquer momento, o que pode quebrar o script. Mantenha os seletores no arquivo form.py atualizados.
+
