@@ -2,7 +2,26 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver import Keys, ActionChains
 import time
+
+
+
+def menu():
+    print("Menu de Opções:\n")
+    print("1 - Emissão Automática (Planilha)")
+    print("2 - Programa Semi-Automático (Terminal)")
+    print("3 - Cadastro de Tomador Automático\n")
+
+    resp = int(input("Digite a opção que você deseja: "))
+
+    while resp < 1 or resp >3:
+        print("Opção não disponível.") 
+        resp = int(input("Tente Novamente: "))
+        
+    return resp
+
+
 
 
 def localForms(navegador):
@@ -26,8 +45,8 @@ def Login():
     navegador.get("https://nfseembudasartes.obaratec.com.br/ords/embu01/f?p=936:1:17237546898536:::::")
 
     #Localiza os campos do login 
-    navegador.find_element(By.XPATH, '//*[@id="P101_USERNAME"]').send_keys("coloque seu usuário aqui")
-    navegador.find_element(By.XPATH, '//*[@id="P101_PASSWORD"]').send_keys("coloque sua senha aqui")
+    navegador.find_element(By.XPATH, '//*[@id="P101_USERNAME"]').send_keys("SEU_USUARIO")
+    navegador.find_element(By.XPATH, '//*[@id="P101_PASSWORD"]').send_keys("SUA SENHA")
 
     #Aperta o botão de entrar
     navegador.find_element(By.XPATH, '//*[@id="P101_LOGIN"]').click()
@@ -89,7 +108,7 @@ def selTomador(navegador,original_window,cnpj):
 
 def concluirEmissão (navegador):
     resp = input("Confirma emissão ? s/n")
-    if resp == 's' or 'S' or 'Sim':
+    if resp in ('s','S','sim','SIM','Sim'):
 
         #Clicar em emitir
         navegador.find_element(By.XPATH, '//*[@id="B3672605734338668498"]').click()
@@ -107,10 +126,58 @@ def concluirEmissãoManual (navegador):
 
     respfim = input("Deseja continuar emitindo novas notas ? s/n")
 
-    if respfim == 's' or 'S' or 'sim' or 'SIM':
+    if respfim in ('s','S','sim','SIM',"Sim"):
         aut = True
     else:
         aut = False
 
     return aut
-        
+
+def cadastroAuto():
+    navegador = Login()
+    #Botao cadastro
+    #WebDriverWait(navegador, 5).until(EC.element_to_be_clickable((By.PARTIAL_LINK_TEXT, "Tomador/Prestador"))).click()
+    navegador.find_element(By.PARTIAL_LINK_TEXT, 'Tomador/Prestador').click()
+
+    #Botao Criar
+    navegador.find_element(By.XPATH, '//*[@id="B3671938022945989178"]').click()
+
+    navegador.find_element(By.XPATH, '//*[@id="P87_TIPO"]').click()
+
+    time.sleep(2)
+
+    navegador.find_element(By.XPATH, '//*[@id="P87_TIPO"]/option[3]').click()
+    
+   
+    time.sleep(2)
+    
+    resp = input("Qual tipo de cadastro deseja realizar (cpf ou cnpj) ? ")
+    if resp == 'cnpj':
+        #Seleciona o 2.1
+        navegador.find_element(By.XPATH, '//*[@id="P87_TIPO2"]/option[2]').click()
+
+        razaoSocial = input("Digite a Razão Social/Nome: ")
+        cnpj = input("Digite o CNPJ:")
+        cep = input("Digite o CEP: ")
+        num = input("Digite o Número: ")
+    
+
+        navegador.find_element(By.XPATH, '//*[@id="P87_COCL_NOM_RAZAO"]').send_keys(razaoSocial)
+        time.sleep(3)
+        navegador.find_element(By.XPATH, '//*[@id="P87_COCL_NUM_CNPJ"]').click()
+        ActionChains(navegador).key_down(Keys.CLEAR)
+        navegador.find_element(By.XPATH, '//*[@id="P87_COCL_NUM_CNPJ"]').send_keys(cnpj)
+        time.sleep(1)
+        navegador.find_element(By.XPATH, '//*[@id="P87_COCL_NUM_CEP"]').send_keys(cep)
+        time.sleep(1)
+        navegador.find_element(By.XPATH, '//*[@id="P87_COCL_NUM_ENDERECO"]').send_keys(num)
+
+        resp = input("Confirma o cadastro ?")
+        if resp in ('s','S','sim','SIM','Sim'):
+             navegador.find_element(By.XPATH, '//*[@id="B8721303721493203105"]').click()
+
+             time.sleep(2)
+             navegador.close()
+
+
+        navegador.close()

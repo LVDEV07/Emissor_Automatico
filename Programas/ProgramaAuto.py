@@ -6,19 +6,19 @@ import pandas as pd
 import time
 import form
 
+tipoPrograma = form.menu()
 
-tipoPrograma = input("Qual tipo de programa deseja executar ? (auto/semi)")
+if tipoPrograma == 1:
 
-
-if tipoPrograma == 'auto':
-
-    tabela = pd.read_excel(r"arquivos\notas.xlsx")
+    tabela = pd.read_excel(r"Arquivos\ExemplosNotas.xlsx")
 
     #Looping para percorrer o xlsx
     for i,cnpj in enumerate(tabela["CNPJ"]):
         desc =tabela.loc[i,"DESCRIÇÃO"]
         valor =tabela.loc[i,"VALOR(R$)"]
         inss =tabela.loc[i,"INSS"]
+        nome =tabela.loc[i,"NOME"]
+
 
         time.sleep(2)
         
@@ -37,15 +37,15 @@ if tipoPrograma == 'auto':
 
         resp = form.concluirEmissão(navegador)
 
-        if resp != 's' or 'S' or 'Sim':
+        if resp not in ('s','S','Sim','SIM','sim'):
             break
 
-elif tipoPrograma == 'semi':
+elif tipoPrograma == 2:
     #Variável de controle
-    aut = True
+
 
     #Looping de preenchimeento
-    while(aut):
+    while(True):
 
             #Campos a serem preenchidos:
             cnpj = input("Digite o CNPJ: ")
@@ -60,7 +60,7 @@ elif tipoPrograma == 'semi':
 
             resp = input("Deseja prosseguir com a emissão s/n ? ")
 
-            if resp == 's':
+            if resp in ('s','S','Sim','SIM','sim'):
                     time.sleep(2)
 
                     #Faz login
@@ -78,8 +78,14 @@ elif tipoPrograma == 'semi':
                     #Responde Campos ctrl C ctrl V
                     form.camposSendKeys(respdesc,navegador,desc,valor)
 
-            #Conclui a emissão:
-            aut = form.concluirEmissãoManual(navegador)
+           
+                    aut = form.concluirEmissãoManual(navegador)
+
+            else:
+                  break
+
+elif tipoPrograma == 3:
+      form.cadastroAuto()
                     
             
             
